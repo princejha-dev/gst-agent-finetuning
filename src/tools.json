@@ -1,0 +1,196 @@
+[
+  {
+    "type": "function",
+    "function": {
+      "name": "calculate_gst",
+      "description": "Calculate GST on an amount, either added on top (exclusive) or extracted from a GST-inclusive price.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "amount": {
+            "type": "number",
+            "description": "Amount in INR"
+          },
+          "rate": {
+            "type": "number",
+            "description": "GST rate in percent, e.g. 5, 18, 40"
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "exclusive",
+              "inclusive"
+            ],
+            "description": "Whether amount excludes or includes GST"
+          }
+        },
+        "required": [
+          "amount",
+          "rate",
+          "mode"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "split_gst",
+      "description": "Split a GST amount into CGST+SGST (intra-state) or IGST (inter-state).",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "gst_amount": {
+            "type": "number"
+          },
+          "supply_type": {
+            "type": "string",
+            "enum": [
+              "intra_state",
+              "inter_state"
+            ]
+          }
+        },
+        "required": [
+          "gst_amount",
+          "supply_type"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "determine_supply_type",
+      "description": "Decide whether a supply is intra-state or inter-state from seller and buyer (place of supply) states.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "seller_state": {
+            "type": "string"
+          },
+          "buyer_state": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "seller_state",
+          "buyer_state"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "get_gst_rate",
+      "description": "Look up the GST rate for a goods/service item from the reference table.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "item": {
+            "type": "string",
+            "description": "Item name in lowercase, e.g. 'shampoo'"
+          }
+        },
+        "required": [
+          "item"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "validate_gstin",
+      "description": "Validate the format and checksum of a 15-character GSTIN. Does not confirm the GSTIN is registered.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "gstin": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "gstin"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "calculate_interest",
+      "description": "Interest on delayed GST payment at 18% per annum (simple interest, days/365).",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "tax_amount": {
+            "type": "number"
+          },
+          "days_late": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "tax_amount",
+          "days_late"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "get_filing_due_date",
+      "description": "Standard due date of GSTR-1 (11th) or GSTR-3B (20th) for a tax period, for regular monthly filers.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "return_type": {
+            "type": "string",
+            "enum": [
+              "GSTR-1",
+              "GSTR-3B"
+            ]
+          },
+          "month": {
+            "type": "integer",
+            "description": "Tax period month 1-12"
+          },
+          "year": {
+            "type": "integer",
+            "description": "Tax period year"
+          }
+        },
+        "required": [
+          "return_type",
+          "month",
+          "year"
+        ]
+      }
+    }
+  },
+  {
+    "type": "function",
+    "function": {
+      "name": "calculate_net_gst_payable",
+      "description": "Net GST payable after set-off of input tax credit (ITC) against output tax.",
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "output_tax": {
+            "type": "number"
+          },
+          "input_tax_credit": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "output_tax",
+          "input_tax_credit"
+        ]
+      }
+    }
+  }
+]
